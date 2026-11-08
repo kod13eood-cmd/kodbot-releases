@@ -28,19 +28,42 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           TAG="${GITHUB_REF_NAME}"
           VERSION="${TAG#v}"
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "release $TAG already exists"
-          else
-            gh release create "$TAG" --draft --title "KodBot ${VERSION}" --notes "KodBot ${VERSION}
+          API="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+          NOTES="$(cat <<EOF
+          KodBot ${VERSION}
 
           Multi-user gateway (invite-only email/password), per-user harnesses and data directories, hosted Companion QR pairing, and Android email/password login.
 
-          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info → Run anyway). **Android:** debug-signed APK, install over the existing build.
+          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). **Android:** debug-signed APK, install over the existing build.
 
-          macOS packages are not built by this workflow; use the separate signed/notarized flow."
+          macOS packages are not built by this workflow; use the separate signed/notarized flow.
+          EOF
+          )"
+          code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "${API}/releases/tags/${TAG}")
+          if [ "$code" = "200" ]; then
+            echo "release ${TAG} already exists"
+            exit 0
           fi
+          jq -n --arg tag "$TAG" --arg name "KodBot ${VERSION}" --arg body "$NOTES" \
+            '{tag_name:$tag,name:$name,draft:true,body:$body}' > /tmp/release.json
+          code=$(curl -sS -o /tmp/create.json -w '%{http_code}' \
+            -X POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/release.json \
+            "${API}/releases")
+          if [ "$code" != "201" ]; then
+            echo "::error::release create failed with HTTP ${code}: $(head -c 500 /tmp/create.json)"
+            exit 1
+          fi
+          echo "created draft release ${TAG}"
 
   linux:
     name: Linux AppImage + deb
