@@ -19,6 +19,15 @@ Versioned files are attached alongside each stable name
 (`KodBot-<version>-setup.exe`, `KodBot-<version>-x86_64.AppImage`,
 `KodBot-<version>-amd64.deb`, `KodBot-android-<version>.apk`).
 
+## Code signing policy
+
+Free code signing provided by [SignPath.io](https://signpath.io), certificate by
+[SignPath Foundation](https://signpath.org). The Windows installer is signed
+through SignPath Foundation's open-source programme after manual approval.
+
+- [Full code signing policy](https://github.com/kod13eood-cmd/KodBot/blob/main/CODE_SIGNING_POLICY.md)
+- [Privacy policy](https://github.com/kod13eood-cmd/KodBot/blob/main/PRIVACY.md)
+
 The Windows installer is currently unsigned; SmartScreen shows **Unknown
 publisher** on first run — choose **More info → Run anyway**. The Android APK
 is debug-signed and installs over an existing debug build.
