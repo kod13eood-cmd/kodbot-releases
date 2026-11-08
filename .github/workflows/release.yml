@@ -158,8 +158,34 @@ jobs:
             echo "::error::app-update.yml carries publisherName on an unsigned build"
             exit 1
           fi
+          grep -q "provider: github" "$res/app-update.yml"
+          grep -q "kodbot-releases" "$res/app-update.yml"
           cp "release/KodBot-${VERSION}-setup.exe" release/KodBot-setup.exe
           ls -lh release/*.exe release/*.yml release/*.blockmap
+      # Existence is not execution. Start the packaged server the same way
+      # the installer will, with no node_modules in the tree, and require
+      # /api/health before uploading.
+      - name: Start packaged server
+        shell: bash
+        working-directory: source
+        run: |
+          res=release/win-unpacked/resources
+          HOME="$RUNNER_TEMP/omb-smoke" USERPROFILE="$RUNNER_TEMP/omb-smoke" \
+            OC_PORT=21987 node "$res/server/index.js" > "$RUNNER_TEMP/server.log" 2>&1 &
+          pid=$!
+          for _ in $(seq 1 90); do
+            if curl -fsS --max-time 2 http://127.0.0.1:21987/api/health >/dev/null 2>&1; then
+              echo "packaged server answered /api/health"
+              kill $pid 2>/dev/null || true
+              exit 0
+            fi
+            kill -0 $pid 2>/dev/null || break
+            sleep 1
+          done
+          echo "::error::the packaged server never served /api/health"
+          cat "$RUNNER_TEMP/server.log" || true
+          kill $pid 2>/dev/null || true
+          exit 1
       - name: Upload Windows assets
         shell: bash
         env:
