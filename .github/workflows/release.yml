@@ -1,0 +1,195 @@
+name: Release packages
+
+# Build installable KodBot packages and attach them to a GitHub release.
+# Trigger by pushing a v* tag to this repository. The source commit/ref is
+# pinned below so the tag, the packages, and the source tree are one unit.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  SOURCE_REPOSITORY: kod13eood-cmd/KodBot
+  SOURCE_REF: feat/multi-user
+
+jobs:
+  prepare:
+    name: Create draft release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create or reuse the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "release $TAG already exists"
+          else
+            gh release create "$TAG" --draft --title "KodBot ${VERSION}" --notes "KodBot ${VERSION}
+
+          Multi-user gateway (invite-only email/password), per-user harnesses and data directories, hosted Companion QR pairing, and Android email/password login.
+
+          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info → Run anyway). **Android:** debug-signed APK, install over the existing build.
+
+          macOS packages are not built by this workflow; use the separate signed/notarized flow."
+          fi
+
+  linux:
+    name: Linux AppImage + deb
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: kod13eood-cmd/KodBot
+          ref: feat/multi-user
+          path: source
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: source/pnpm-lock.yaml
+      - name: Build packages
+        working-directory: source
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm package:linux
+      - name: Stable filenames and version check
+        working-directory: source
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          test "v${VERSION}" = "${GITHUB_REF_NAME}" || {
+            echo "::error::package.json is ${VERSION}, tag is ${GITHUB_REF_NAME}"
+            exit 1
+          }
+          cp "release/KodBot-${VERSION}-x86_64.AppImage" release/KodBot.AppImage
+          cp "release/KodBot-${VERSION}-amd64.deb" release/KodBot.deb
+          ls -lh release/*.AppImage release/*.deb release/latest-linux.yml
+      - name: Upload Linux assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        working-directory: source
+        run: |
+          gh release upload "${GITHUB_REF_NAME}" \
+            release/KodBot-*-x86_64.AppImage \
+            release/KodBot-*-amd64.deb \
+            release/KodBot.AppImage \
+            release/KodBot.deb \
+            release/latest-linux.yml \
+            --clobber
+
+  windows:
+    name: Windows installer
+    needs: prepare
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: kod13eood-cmd/KodBot
+          ref: feat/multi-user
+          path: source
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: source/pnpm-lock.yaml
+      - name: Build installer
+        shell: bash
+        working-directory: source
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm package:win
+      - name: Verify packaged tree
+        shell: bash
+        working-directory: source
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          test "v${VERSION}" = "${GITHUB_REF_NAME}" || {
+            echo "::error::package.json is ${VERSION}, tag is ${GITHUB_REF_NAME}"
+            exit 1
+          }
+          res=release/win-unpacked/resources
+          test -f "$res/server/index.js"
+          test -f "$res/ui/index.html"
+          test -f "$res/app-update.yml"
+          if grep -q publisherName "$res/app-update.yml"; then
+            echo "::error::app-update.yml carries publisherName on an unsigned build"
+            exit 1
+          fi
+          cp "release/KodBot-${VERSION}-setup.exe" release/KodBot-setup.exe
+          ls -lh release/*.exe release/*.yml release/*.blockmap
+      - name: Upload Windows assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        working-directory: source
+        run: |
+          gh release upload "${GITHUB_REF_NAME}" \
+            release/KodBot-*-setup.exe \
+            release/KodBot-setup.exe \
+            release/KodBot-*-setup.exe.blockmap \
+            release/latest.yml \
+            --clobber
+
+  android:
+    name: Android APK
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: kod13eood-cmd/KodBot
+          ref: feat/multi-user
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Build APK
+        working-directory: source/android
+        run: |
+          ./gradlew :app:testDebugUnitTest :app:assembleDebug
+      - name: Stable filenames
+        working-directory: source
+        run: |
+          VERSION="$(sed -n 's/.*versionName = \"\\(.*\\)\".*/\\1/p' android/app/build.gradle.kts | head -n 1)"
+          test -n "$VERSION"
+          cp android/app/build/outputs/apk/debug/app-debug.apk "KodBot-android-${VERSION}.apk"
+          cp android/app/build/outputs/apk/debug/app-debug.apk KodBot-android.apk
+          ls -lh KodBot-android*.apk
+      - name: Upload Android assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        working-directory: source
+        run: |
+          gh release upload "${GITHUB_REF_NAME}" \
+            KodBot-android-*.apk \
+            KodBot-android.apk \
+            --clobber
+
+  publish:
+    name: Publish latest release
+    needs: [linux, windows, android]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release edit "${GITHUB_REF_NAME}" --draft=false --latest --title "KodBot ${GITHUB_REF_NAME#v}"
