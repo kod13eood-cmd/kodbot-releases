@@ -37,7 +37,7 @@ jobs:
 
           Multi-user gateway (invite-only email/password), per-user harnesses and data directories, hosted Companion QR pairing, and Android email/password login.
 
-          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). **Android:** debug-signed APK, install over the existing build.
+          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). **Android:** APK signed with the stable KodBot key. If you installed an earlier GitHub CI-signed APK, uninstall it once before installing this one.
 
           macOS packages are not built by this workflow; use the separate signed/notarized flow.
           EOF
@@ -235,6 +235,19 @@ jobs:
           KODBOT_ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           ./gradlew :app:testDebugUnitTest :app:assembleDebug
+      - name: Verify the APK uses the installed signing key
+        shell: bash
+        working-directory: source/android
+        env:
+          EXPECTED_SHA256: 0b20035e3dc7726f6a5181824fcb85461c9460588369a610dad53ddcd65c2369
+        run: |
+          set -euo pipefail
+          apk="app/build/outputs/apk/debug/app-debug.apk"
+          sdk="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          apksigner="$(find "$sdk" -path '*/build-tools/*/apksigner' -type f | sort -V | tail -n 1)"
+          test -n "$apksigner"
+          "$apksigner" verify --print-certs "$apk" | tee "$RUNNER_TEMP/apk-certs.txt"
+          grep -qi "SHA-256 digest: $EXPECTED_SHA256" "$RUNNER_TEMP/apk-certs.txt"
       - name: Stable filenames
         working-directory: source
         run: |
