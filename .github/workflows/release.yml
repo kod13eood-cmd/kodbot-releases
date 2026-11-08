@@ -195,7 +195,7 @@ jobs:
       - name: Stable filenames
         working-directory: source
         run: |
-          VERSION="$(sed -n 's/.*versionName = \"\\(.*\\)\".*/\\1/p' android/app/build.gradle.kts | head -n 1)"
+          VERSION="$(awk -F'"' '/versionName = / { print $2; exit }' android/app/build.gradle.kts)"
           test -n "$VERSION"
           cp android/app/build/outputs/apk/debug/app-debug.apk "KodBot-android-${VERSION}.apk"
           cp android/app/build/outputs/apk/debug/app-debug.apk KodBot-android.apk
