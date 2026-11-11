@@ -37,7 +37,7 @@ jobs:
 
           First-run server choice: run KodBot on this computer or connect to a remote server or gateway. The desktop app now recognizes a KodBot gateway, opens its email/password login, and keeps the session.
 
-          Automations run on dedicated worker bots. Webhook and scheduled work never replaces the active chat; results arrive in an `<automation> · Results` task with a notification, and "NOTHING NEW" stays silent. Old tasks can be archived from the task picker without deleting their messages.
+          Automations run on dedicated worker bots. Webhook and scheduled work never replaces the active chat; results arrive in a separate automation Results task with a notification, and "NOTHING NEW" stays silent. Old tasks can be archived from the task picker without deleting their messages.
 
           Voice push-to-talk, Local VM workflow recording with "Analyze with <bot>", and the KodBot VM rename from 0.1.41 remain included.
 
