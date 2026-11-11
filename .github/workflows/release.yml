@@ -12,7 +12,9 @@ permissions:
   contents: write
 
 concurrency:
-  group: release-${{ github.ref }}
+  # Unique per run: re-tagging a release must not deadlock behind a stale
+  # queue entry from the previous tag object.
+  group: release-${{ github.run_id }}
   cancel-in-progress: false
 
 env:
