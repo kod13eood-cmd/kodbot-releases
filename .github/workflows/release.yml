@@ -49,7 +49,20 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             "${API}/releases/tags/${TAG}")
           if [ "$code" = "200" ]; then
-            echo "release ${TAG} already exists"
+            echo "release ${TAG} already exists; refreshing its notes"
+            jq -n --arg name "KodBot ${VERSION}" --arg body "$NOTES" \
+              '{name:$name,body:$body}' > /tmp/release-update.json
+            code=$(curl -sS -o /tmp/update.json -w '%{http_code}' \
+              -X PATCH \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "Content-Type: application/json" \
+              --data-binary @/tmp/release-update.json \
+              "${API}/releases/tags/${TAG}")
+            if [ "$code" != "200" ]; then
+              echo "::error::release update failed with HTTP ${code}: $(head -c 500 /tmp/update.json)"
+              exit 1
+            fi
             exit 0
           fi
           jq -n --arg tag "$TAG" --arg name "KodBot ${VERSION}" --arg body "$NOTES" \
