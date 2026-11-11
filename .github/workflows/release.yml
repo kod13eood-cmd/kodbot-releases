@@ -35,11 +35,13 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Push-to-talk voice in the desktop and Android composers, using local faster-whisper speech-to-text and Piper text-to-speech. Workflow recording in the Local VM viewer, with "Analyze with <bot>" writing the workflow into bot memory. The Local VM is now named KodBot everywhere: container, image, hostname, labels, CUA paths, and the viewer shows "KodBot:1 (cua)". Android has native hold-to-talk.
+          First-run server choice: run KodBot on this computer or connect to a remote server or gateway. The desktop app now recognizes a KodBot gateway, opens its email/password login, and keeps the session.
 
-          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). **Android:** APK signed with the stable KodBot key. If you installed an earlier GitHub CI-signed APK, uninstall it once before installing this one.
+          Automations run on dedicated worker bots. Webhook and scheduled work never replaces the active chat; results arrive in an `<automation> · Results` task with a notification, and "NOTHING NEW" stays silent. Old tasks can be archived from the task picker without deleting their messages.
 
-          macOS packages are not built by this workflow; use the separate signed/notarized flow.
+          Voice push-to-talk, Local VM workflow recording with "Analyze with <bot>", and the KodBot VM rename from 0.1.41 remain included.
+
+          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). **Android:** 0.1.19 remains current; the new server UI is delivered through the app. macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
