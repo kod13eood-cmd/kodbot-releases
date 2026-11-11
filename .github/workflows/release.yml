@@ -17,7 +17,7 @@ concurrency:
 
 env:
   SOURCE_REPOSITORY: kod13eood-cmd/KodBot
-  SOURCE_REF: feat/multi-user
+  SOURCE_REF: feat/vnc-record-voice
 
 jobs:
   prepare:
@@ -35,7 +35,7 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Multi-user gateway (invite-only email/password), per-user harnesses and data directories, hosted Companion QR pairing, and Android email/password login.
+          Push-to-talk voice in the desktop and Android composers, using local faster-whisper speech-to-text and Piper text-to-speech. Workflow recording in the Local VM viewer, with "Analyze with <bot>" writing the workflow into bot memory. The Local VM is now named KodBot everywhere: container, image, hostname, labels, CUA paths, and the viewer shows "KodBot:1 (cua)". Android has native hold-to-talk.
 
           **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). **Android:** APK signed with the stable KodBot key. If you installed an earlier GitHub CI-signed APK, uninstall it once before installing this one.
 
@@ -74,7 +74,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: kod13eood-cmd/KodBot
-          ref: feat/multi-user
+          ref: feat/vnc-record-voice
           path: source
           persist-credentials: false
       - uses: pnpm/action-setup@v4
@@ -124,7 +124,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: kod13eood-cmd/KodBot
-          ref: feat/multi-user
+          ref: feat/vnc-record-voice
           path: source
           persist-credentials: false
       - uses: pnpm/action-setup@v4
@@ -170,7 +170,7 @@ jobs:
         working-directory: source
         run: |
           res=release/win-unpacked/resources
-          HOME="$RUNNER_TEMP/omb-smoke" USERPROFILE="$RUNNER_TEMP/omb-smoke" \
+          HOME="$RUNNER_TEMP/kodbot-smoke" USERPROFILE="$RUNNER_TEMP/kodbot-smoke" \
             OC_PORT=21987 node "$res/server/index.js" > "$RUNNER_TEMP/server.log" 2>&1 &
           pid=$!
           for _ in $(seq 1 90); do
@@ -209,7 +209,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: kod13eood-cmd/KodBot
-          ref: feat/multi-user
+          ref: feat/vnc-record-voice
           path: source
           persist-credentials: false
       - uses: actions/setup-java@v4
