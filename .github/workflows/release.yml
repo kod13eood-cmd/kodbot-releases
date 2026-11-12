@@ -37,13 +37,11 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          First-run server choice: run KodBot on this computer or connect to a remote server or gateway. The desktop app now recognizes a KodBot gateway, opens its email/password login, and keeps the session.
+          Voice fixes and voice notes. The composer microphone now works while a bot is busy, uses click-to-talk on Linux/Windows/web, and never hangs if the recorder misses its stop event. App Settings -> Voice has a microphone test and a speaker test, and the audio-lines button records a voice note: play it before sending, and the bot receives the clip plus a local transcript when available.
 
-          Automations run on dedicated worker bots. Webhook and scheduled work never replaces the active chat; results arrive in a separate automation Results task with a notification, and "NOTHING NEW" stays silent. Old tasks can be archived from the task picker without deleting their messages.
+          Android native dictation is fixed: the companion now forwards /api/voice/transcribe, plus the TTS and upload routes used by Desktop mode, so the phone no longer gets "no route: POST /api/voice/transcribe". Android stays on 0.1.19; the APK itself is unchanged.
 
-          Voice push-to-talk, Local VM workflow recording with "Analyze with <bot>", and the KodBot VM rename from 0.1.41 remain included.
-
-          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). **Android:** 0.1.19 remains current; the new server UI is delivered through the app. macOS: separate signed/notarized flow.
+          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). Android: 0.1.19 remains current. macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
