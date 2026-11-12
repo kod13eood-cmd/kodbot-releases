@@ -37,11 +37,11 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Voice fixes and voice notes. The composer microphone now works while a bot is busy, uses click-to-talk on Linux/Windows/web, and never hangs if the recorder misses its stop event. App Settings -> Voice has a microphone test and a speaker test, and the audio-lines button records a voice note: play it before sending, and the bot receives the clip plus a local transcript when available.
+          Bulgarian transcription and Android voice notes. Local speech-to-text now uses the small Whisper model with beam search 5, and App Settings -> Voice has an Auto / Bulgarian / English recognition language. Bulgarian text should be more accurate; CPU transcription is slower.
 
-          Android native dictation is fixed: the companion now forwards /api/voice/transcribe, plus the TTS and upload routes used by Desktop mode, so the phone no longer gets "no route: POST /api/voice/transcribe". Android stays on 0.1.19; the APK itself is unchanged.
+          The Android native composer has a new audio-lines button: record a voice note, play it back, see the transcript when ready, and send it as an attachment. Android is now 0.1.20 (versionCode 21) and updates in place with the stable key.
 
-          **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). Android: 0.1.19 remains current. macOS: separate signed/notarized flow.
+          Desktop ${VERSION} includes the same language setting and the voice-note composer from 0.1.43. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
