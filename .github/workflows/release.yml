@@ -37,11 +37,9 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Bulgarian transcription and Android voice notes. Local speech-to-text now uses the small Whisper model with beam search 5, and App Settings -> Voice has an Auto / Bulgarian / English recognition language. Bulgarian text should be more accurate; CPU transcription is slower.
+          Transcription progress. After dictation or a voice note, the composer now shows a spinner, elapsed seconds, and a CPU-time hint while Whisper works, so the app no longer looks frozen. Android has the same visible progress row, and is now 0.1.21 (versionCode 22).
 
-          The Android native composer has a new audio-lines button: record a voice note, play it back, see the transcript when ready, and send it as an attachment. Android is now 0.1.20 (versionCode 21) and updates in place with the stable key.
-
-          Desktop ${VERSION} includes the same language setting and the voice-note composer from 0.1.43. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          Desktop ${VERSION} includes the voice-note and language work from 0.1.44. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
