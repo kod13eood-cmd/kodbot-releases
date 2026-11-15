@@ -37,11 +37,9 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Page downloads now ask where to save. When a page publishes a file (a test APK, an export), the desktop app opens a save dialog with the suggested filename, then a progress card shows the percentage, the final path, and a Show-in-folder action. Browsers keep their own download UI.
+          A turn can no longer disappear silently. If the harness restarts while a bot is working (a deploy, a crash, a machine restart), the transcript now shows a clear interruption note and marks the bot unread instead of just going quiet with no answer; the next message continues from there.
 
-          Android 0.1.26 (versionCode 27): file links inside a page use Android's DownloadManager, with progress in the notification shade and the file in Downloads.
-
-          Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          Desktop ${VERSION}. Android stays 0.1.26 (versionCode 27); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
