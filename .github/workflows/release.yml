@@ -37,11 +37,11 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Fixes the guide's close button in the desktop app. Electron treats the header strips as window drag handles; the guide dialog opens over one, so a real mouse press on its X started a window drag instead of a click - no hover, no close. Browsers and synthetic clicks bypassed the window frame, which is why it only showed in the app. Dialogs and the needs-you bar now opt out of the drag region.
+          Pages now work on the phone. A bot's chat has a Pages list, page messages render as cards, and each page opens in a full-screen viewer through the paired companion. The phone is read-only: it cannot create, edit, or delete a page.
 
-          This build also carries 0.1.49: the floating window controls step aside while a side panel or modal is open, and Windows headers reserve the native caption area so panel close buttons cannot hide under the system buttons.
+          App Settings -> General -> Public address sets the address other devices use to reach this server (for example a Tailscale name). Page cards, copied links, and links bots write use it, so they no longer point at 127.0.0.1; an empty setting keeps the address the window was opened with. Bots also receive that address in their page instructions.
 
-          Desktop ${VERSION}. Android stays 0.1.22 (versionCode 23); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          Android 0.1.23 (versionCode 24) is included. Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
