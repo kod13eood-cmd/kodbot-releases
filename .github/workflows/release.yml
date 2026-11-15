@@ -37,13 +37,11 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Bots can ask with tappable answers on every engine. OpenCode's question tool existed, but KodBot's ACP client never advertised form support, so the model was told the question could not be shown and fell back to prose. The new bridge renders the form as the same card Claude and Codex use: tap an option, or type your own answer. Multi-question forms are asked one card at a time, and the approval timeout still applies.
+          Fixes the close buttons in the frameless desktop window. On Linux the floating window controls sat on top of a side panel's close button (bot settings, computer, inspector), and on narrower windows on top of the guide's X too, stealing both the click and the hover state. They now step aside while a panel or full-screen modal is open, and a panel's own X stays clickable.
 
-          Opening a bot now clears the unread report dot on the task it is showing, so a report you are already reading stops marking itself new.
+          Windows reserves the native caption buttons the same way the chat header already does, so panel and dialog close buttons no longer sit underneath the system min/max/close buttons.
 
-          Android 0.1.22 is included: automation summaries carry a See full run button that opens the worker's run in the native chat, and the fleet badge counts report dots on a bot's tasks, clearing them when the chat is opened.
-
-          Desktop ${VERSION}; Android 0.1.22 (versionCode 23). **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          Desktop ${VERSION}. Android stays 0.1.22 (versionCode 23); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
