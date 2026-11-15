@@ -37,9 +37,9 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Automation reports now carry the page the run wrote. When a worker builds a dashboard or report, the summary in the owner's chat shows a page card right under it - preview and open in place - on desktop and Android. Text messages that carry a page render the card too.
+          Tasks: right-click a task in the desktop task picker for Rename, Archive, or Delete. The inline archive/delete icons are gone; archived tasks restore from the same menu, and renaming is now discoverable instead of hidden behind a double-click.
 
-          Android 0.1.24 (versionCode 25): the voice-note and hold-to-talk buttons now sit above Send, leaving the message field wider on a phone. Includes 0.1.23's in-app Pages list.
+          Android 0.1.25 (versionCode 26): the chat's top-right menu now holds Tasks and Pages. Tasks switch, rename, archive, restore, delete, and start a new task; Pages opens the in-app viewer. Also includes 0.1.24: report page cards and voice actions above Send.
 
           Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
