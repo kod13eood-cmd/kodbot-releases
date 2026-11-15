@@ -37,9 +37,9 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Fixes the close buttons in the frameless desktop window. On Linux the floating window controls sat on top of a side panel's close button (bot settings, computer, inspector), and on narrower windows on top of the guide's X too, stealing both the click and the hover state. They now step aside while a panel or full-screen modal is open, and a panel's own X stays clickable.
+          Fixes the guide's close button in the desktop app. Electron treats the header strips as window drag handles; the guide dialog opens over one, so a real mouse press on its X started a window drag instead of a click - no hover, no close. Browsers and synthetic clicks bypassed the window frame, which is why it only showed in the app. Dialogs and the needs-you bar now opt out of the drag region.
 
-          Windows reserves the native caption buttons the same way the chat header already does, so panel and dialog close buttons no longer sit underneath the system min/max/close buttons.
+          This build also carries 0.1.49: the floating window controls step aside while a side panel or modal is open, and Windows headers reserve the native caption area so panel close buttons cannot hide under the system buttons.
 
           Desktop ${VERSION}. Android stays 0.1.22 (versionCode 23); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
