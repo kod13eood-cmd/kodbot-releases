@@ -37,11 +37,13 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Automation reports now land in the owner's main chat. Scheduled and manual routines run on a dedicated worker bot; when they finish, a compact summary with See full run is appended to the owner's permanent main chat. The main chat is never switched, and a report waits if the owner is mid-turn. Webhook alerts keep their Results task. The task shows an unread dot until opened.
+          Bots can ask with tappable answers on every engine. OpenCode's question tool existed, but KodBot's ACP client never advertised form support, so the model was told the question could not be shown and fell back to prose. The new bridge renders the form as the same card Claude and Codex use: tap an option, or type your own answer. Multi-question forms are asked one card at a time, and the approval timeout still applies.
 
-          The worker is asked to end with a SUMMARY / NEEDS YOU block, so the main chat shows 3-5 bullets instead of the whole run. Watcher and Skye have been migrated to hidden worker bots and their old daily tasks archived.
+          Opening a bot now clears the unread report dot on the task it is showing, so a report you are already reading stops marking itself new.
 
-          Desktop ${VERSION}; Android remains 0.1.21. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          Android 0.1.22 is included: automation summaries carry a See full run button that opens the worker's run in the native chat, and the fleet badge counts report dots on a bot's tasks, clearing them when the chat is opened.
+
+          Desktop ${VERSION}; Android 0.1.22 (versionCode 23). **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
