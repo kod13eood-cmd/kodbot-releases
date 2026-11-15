@@ -37,9 +37,9 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Tasks: right-click a task in the desktop task picker for Rename, Archive, or Delete. The inline archive/delete icons are gone; archived tasks restore from the same menu, and renaming is now discoverable instead of hidden behind a double-click.
+          Page downloads now ask where to save. When a page publishes a file (a test APK, an export), the desktop app opens a save dialog with the suggested filename, then a progress card shows the percentage, the final path, and a Show-in-folder action. Browsers keep their own download UI.
 
-          Android 0.1.25 (versionCode 26): the chat's top-right menu now holds Tasks and Pages. Tasks switch, rename, archive, restore, delete, and start a new task; Pages opens the in-app viewer. Also includes 0.1.24: report page cards and voice actions above Send.
+          Android 0.1.26 (versionCode 27): file links inside a page use Android's DownloadManager, with progress in the notification shade and the file in Downloads.
 
           Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
