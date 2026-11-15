@@ -37,11 +37,11 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Pages now work on the phone. A bot's chat has a Pages list, page messages render as cards, and each page opens in a full-screen viewer through the paired companion. The phone is read-only: it cannot create, edit, or delete a page.
+          Automation reports now carry the page the run wrote. When a worker builds a dashboard or report, the summary in the owner's chat shows a page card right under it - preview and open in place - on desktop and Android. Text messages that carry a page render the card too.
 
-          App Settings -> General -> Public address sets the address other devices use to reach this server (for example a Tailscale name). Page cards, copied links, and links bots write use it, so they no longer point at 127.0.0.1; an empty setting keeps the address the window was opened with. Bots also receive that address in their page instructions.
+          Android 0.1.24 (versionCode 25): the voice-note and hold-to-talk buttons now sit above Send, leaving the message field wider on a phone. Includes 0.1.23's in-app Pages list.
 
-          Android 0.1.23 (versionCode 24) is included. Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
