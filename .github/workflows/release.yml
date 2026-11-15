@@ -37,9 +37,9 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Transcription progress. After dictation or a voice note, the composer now shows a spinner, elapsed seconds, and a CPU-time hint while Whisper works, so the app no longer looks frozen. Android has the same visible progress row, and is now 0.1.21 (versionCode 22).
+          Faster transcription. The small Whisper model now stays warm in a long-lived worker; subsequent clips transcribe in roughly 15-20 seconds instead of about 50 seconds on the same CPU. The first request still pays the model load. Android remains 0.1.21; this is a server-side speedup.
 
-          Desktop ${VERSION} includes the voice-note and language work from 0.1.44. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          Desktop ${VERSION} includes the transcription progress indicator from 0.1.45 and the voice-note/language work from 0.1.44. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
