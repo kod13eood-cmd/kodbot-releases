@@ -19,7 +19,7 @@ concurrency:
 
 env:
   SOURCE_REPOSITORY: kod13eood-cmd/KodBot
-  SOURCE_REF: feat/vnc-record-voice
+  SOURCE_REF: main
 
 jobs:
   prepare:
@@ -37,7 +37,9 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Settings -> About now shows the running version and the components it depends on: Node, platform and architecture; the desktop shell's Electron, Chromium and Node versions; every available engine CLI with the version probed from its own --version; and the local speech stack (faster-whisper, Piper or ElevenLabs). If a remote desktop and the server are on different versions, About says so.
+          Faster follow-up turns: ACP engines keep their process warm for 10 minutes (up to four parked), so the next message continues the same session without spawning the CLI and loading it again. The stable system layer is sent once per session; memory, pages and per-message notes still ride every turn. A fresh replay now includes a short recent-tool trace.
+
+          Work alone (off by default, Bot settings): when a turn stops with an open checklist or a denied tool, the bot continues once by itself, then posts a "This still needs you" card if it is still unfinished. It does not widen approvals — destructive, secret, sudo, payment and outbound actions still ask a person.
 
           Desktop ${VERSION}. Android stays 0.1.26 (versionCode 27); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
@@ -87,7 +89,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: kod13eood-cmd/KodBot
-          ref: feat/vnc-record-voice
+          ref: main
           path: source
           persist-credentials: false
       - uses: pnpm/action-setup@v4
@@ -137,7 +139,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: kod13eood-cmd/KodBot
-          ref: feat/vnc-record-voice
+          ref: main
           path: source
           persist-credentials: false
       - uses: pnpm/action-setup@v4
@@ -222,7 +224,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: kod13eood-cmd/KodBot
-          ref: feat/vnc-record-voice
+          ref: main
           path: source
           persist-credentials: false
       - uses: actions/setup-java@v4
