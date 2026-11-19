@@ -37,13 +37,13 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Faster follow-up turns: ACP engines keep their process warm for 10 minutes (up to four parked), so the next message continues the same session without spawning the CLI and loading it again. The stable system layer is sent once per session; memory, pages and per-message notes still ride every turn. A fresh replay now includes a short recent-tool trace.
+          Skill routing and Economy: each Auto turn is classified as code, screen, translate, or general. Code stays on a strong model; screen work prefers a vision model; a short translation or simple question uses a faster/free model only when Economy mode is on (off by default, desktop and Android).
 
-          Work alone (off by default, Bot settings): when a turn stops with an open checklist or a denied tool, the bot continues once by itself, then posts a "This still needs you" card if it is still unfinished. It does not widen approvals — destructive, secret, sudo, payment and outbound actions still ask a person.
+          A finished multi-step turn can offer "Save this as a routine?" with an editable prompt and time; saving creates a paused routine. A bot in a team can share one cloud computer with its teammates.
 
-          This release also carries the Settings -> About panel from 0.1.56.
+          Android 0.1.27 (versionCode 28) has a full Bulgarian interface and a Language switch in Settings. The desktop's EN/BG now covers the main remaining panels, approval cards, update banner, rooms, calls, and server-authored cards.
 
-          Desktop ${VERSION}. Android stays 0.1.26 (versionCode 27); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
