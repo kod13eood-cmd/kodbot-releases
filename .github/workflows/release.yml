@@ -52,6 +52,10 @@ jobs:
             "${API}/releases/tags/${TAG}")
           if [ "$code" = "200" ]; then
             echo "release ${TAG} already exists; refreshing its notes"
+            # PATCH updates a release by numeric id; /releases/tags/<tag> is
+            # GET-only and answers 404 to an update.
+            RELEASE_ID="$(jq -r '.id' /tmp/existing.json)"
+            test -n "$RELEASE_ID" -a "$RELEASE_ID" != "null"
             jq -n --arg name "KodBot ${VERSION}" --arg body "$NOTES" \
               '{name:$name,body:$body}' > /tmp/release-update.json
             code=$(curl -sS -o /tmp/update.json -w '%{http_code}' \
@@ -60,7 +64,7 @@ jobs:
               -H "Accept: application/vnd.github+json" \
               -H "Content-Type: application/json" \
               --data-binary @/tmp/release-update.json \
-              "${API}/releases/tags/${TAG}")
+              "${API}/releases/${RELEASE_ID}")
             if [ "$code" != "200" ]; then
               echo "::error::release update failed with HTTP ${code}: $(head -c 500 /tmp/update.json)"
               exit 1
