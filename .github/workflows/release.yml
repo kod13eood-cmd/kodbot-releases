@@ -41,6 +41,8 @@ jobs:
 
           Work alone (off by default, Bot settings): when a turn stops with an open checklist or a denied tool, the bot continues once by itself, then posts a "This still needs you" card if it is still unfinished. It does not widen approvals — destructive, secret, sudo, payment and outbound actions still ask a person.
 
+          This release also carries the Settings -> About panel from 0.1.56.
+
           Desktop ${VERSION}. Android stays 0.1.26 (versionCode 27); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
