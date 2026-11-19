@@ -37,11 +37,9 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Shared knowledge: Settings -> Knowledge now holds a global book for every bot (owner, mission, projects, skills, people, preferences) and a separate book for each team. The compact core rides every turn; full topics are snapshotted into each bot's workspace and read on demand. Bots propose durable facts in chat; a person edits and approves them with the book button on a reply.
+          Send now: a queued prompt can join the running turn instead of waiting for it to finish. ACP engines use the _session/steering extension and Codex uses turn/steer, so the bot can change course at a safe point; other engines keep the message in the persistent queue until the turn ends. Press Enter on the focused queued card or use its send button.
 
-          Public dated changelog at /changelog, with no login. The source is CHANGELOG.md in the repo and ships beside the server; About -> Public changelog opens it.
-
-          The last English desktop panels are now Bulgarian: Engines, Local Computer, the Local VM viewer, the team library, and the Inspector.
+          Routine suggestions are now global + per-bot and off by default. Enable them in Settings -> General, or override them per bot. The cloud-computer actions now resolve the team-shared scope for provision, join, sleep, exec, and screenshot.
 
           Desktop ${VERSION}. Android stays 0.1.27 (versionCode 28); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
