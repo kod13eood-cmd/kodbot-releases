@@ -37,14 +37,15 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Skill routing and Economy: each Auto turn is classified as code, screen, translate, or general. Code stays on a strong model; screen work prefers a vision model; a short translation or simple question uses a faster/free model only when Economy mode is on (off by default, desktop and Android).
+          Shared knowledge: Settings -> Knowledge now holds a global book for every bot (owner, mission, projects, skills, people, preferences) and a separate book for each team. The compact core rides every turn; full topics are snapshotted into each bot's workspace and read on demand. Bots propose durable facts in chat; a person edits and approves them with the book button on a reply.
 
-          A finished multi-step turn can offer "Save this as a routine?" with an editable prompt and time; saving creates a paused routine. A bot in a team can share one cloud computer with its teammates.
+          Public dated changelog at /changelog, with no login. The source is CHANGELOG.md in the repo and ships beside the server; About -> Public changelog opens it.
 
-          Android 0.1.27 (versionCode 28) has a full Bulgarian interface and a Language switch in Settings. The desktop's EN/BG now covers the main remaining panels, approval cards, update banner, rooms, calls, and server-authored cards.
+          The last English desktop panels are now Bulgarian: Engines, Local Computer, the Local VM viewer, the team library, and the Inspector.
 
-          Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          Desktop ${VERSION}. Android stays 0.1.27 (versionCode 28); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
+          )"          EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
             -H "Authorization: Bearer ${GH_TOKEN}" \
