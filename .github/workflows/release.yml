@@ -45,7 +45,6 @@ jobs:
 
           Desktop ${VERSION}. Android stays 0.1.27 (versionCode 28); the APK is rebuilt unchanged. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
-          )"          EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
             -H "Authorization: Bearer ${GH_TOKEN}" \
