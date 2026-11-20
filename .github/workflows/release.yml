@@ -37,11 +37,9 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Android 0.1.28 (versionCode 29): Send now on queued messages, and a full Knowledge editor for the global book and each team book (core + topics). The desktop already had both.
+          Hard spending caps: per-bot daily token and USD limits, plus app-wide monthly token and USD limits. Empty or 0 means off. A turn that is already running always finishes; the next one is refused with a clear message. A local append-only ledger records each settled turn, so the windows survive restarts.
 
-          Native Claude steering is available experimentally with KODBOT_CLAUDE_STEERING=1: stdin stays open, a second stream-json message can join the turn, and input closes after two minutes with fallback to the normal queue. Off by default until the CLI’s EOF behavior is verified.
-
-          The Knowledge editor now warns that the global book is readable by every bot; keep client-sensitive material in a team book or a topic.
+          Android stays 0.1.28 (versionCode 29): Send now on queued messages and the full global/team Knowledge editor. Native Claude steering remains available experimentally with KODBOT_CLAUDE_STEERING=1 (two-minute stdin close + fallback).
 
           Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
