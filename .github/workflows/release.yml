@@ -121,6 +121,8 @@ jobs:
             echo "::error::package.json is ${VERSION}, tag is ${GITHUB_REF_NAME}"
             exit 1
           }
+          test -x release/linux-unpacked/resources/opencode/opencode
+          release/linux-unpacked/resources/opencode/opencode --version
           cp "release/KodBot-${VERSION}-x86_64.AppImage" release/KodBot.AppImage
           cp "release/KodBot-${VERSION}-amd64.deb" release/KodBot.deb
           ls -lh release/*.AppImage release/*.deb release/latest-linux.yml
@@ -177,6 +179,8 @@ jobs:
           test -f "$res/server/index.js"
           test -f "$res/ui/index.html"
           test -f "$res/app-update.yml"
+          test -f "$res/opencode/opencode.exe"
+          "$res/opencode/opencode.exe" --version
           if grep -q publisherName "$res/app-update.yml"; then
             echo "::error::app-update.yml carries publisherName on an unsigned build"
             exit 1
