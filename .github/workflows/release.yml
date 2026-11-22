@@ -37,11 +37,15 @@ jobs:
           NOTES="$(cat <<EOF
           KodBot ${VERSION}
 
-          Hard spending caps: per-bot daily token and USD limits, plus app-wide monthly token and USD limits. Empty or 0 means off. A turn that is already running always finishes; the next one is refused with a clear message. A local append-only ledger records each settled turn, so the windows survive restarts.
+          KodBot Solo and KodBot Business, shared bot templates, and OpenCode included.
 
-          Android stays 0.1.28 (versionCode 29): Send now on queued messages and the full global/team Knowledge editor. Native Claude steering remains available experimentally with KODBOT_CLAUDE_STEERING=1 (two-minute stdin close + fallback).
-
-          Desktop ${VERSION}. **Linux:** AppImage and .deb (x64). **Windows:** unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
+          - First launch asks Solo (local, private, free, no account) or Business (organization server, browser sign-in). Change later in Settings → General → Usage mode.
+          - Business owners can publish a shared bot template (name, title, description, core MEMORY.md; common secret shapes redacted). Members install their own copy; turns run in their workspace with their own key and quota.
+          - Packaged builds include OpenCode 2.3.2 for the platform; pinned and updated with KodBot releases, no self-update. Add an OpenCode API key; new bots prefer it.
+          - Team leaders now collect delegated replies from teammates and cross-team peers in one follow-up turn. Page forms submit again.
+          - Gateway: bilingual login and owner-only Admin for users, invites, temporary passwords, disable, sessions.
+          - Android remains 0.1.28 (versionCode 29).
+          - Linux: AppImage + deb (x64). Windows: unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
           code=$(curl -sS -o /tmp/existing.json -w '%{http_code}' \
