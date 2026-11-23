@@ -41,6 +41,8 @@ jobs:
 
           - User mode keeps one calm status line through the whole turn: thinking, searching, reading, writing, editing, running a command, asking the team, using the computer, or writing a reply, with an animated icon and a timer. It stays visible after a sentence lands. Developer mode still shows the full reasoning and every tool action.
           - Language settings now include **New bot names**: match the app language, Bulgarian Cyrillic names, or English names. Only new bots are affected.
+          - Windows Solo now adds the bundled OpenCode to the user PATH and runs its sign-in from the bundled executable. Free models work immediately; sign-in is optional for paid models.
+          - Gateway: failed browser logins return to the form with an error, and signed-in users can change their own password in Settings → Account.
           - The queued-message panel sits above the composer in normal flow and stays collapsed until opened, so it cannot cover the chat.
           - Windows installers now list **Kod 13 Ltd** as Publisher; the Linux deb maintainer uses the same legal name.
           - Windows and Android app icons now use the same mint K monogram as Linux. Android is 0.1.29 (versionCode 30).
