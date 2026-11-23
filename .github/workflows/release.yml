@@ -41,6 +41,8 @@ jobs:
 
           - User mode keeps one calm status line through the whole turn: thinking, searching, reading, writing, editing, running a command, asking the team, using the computer, or writing a reply, with an animated icon and a timer. It stays visible after a sentence lands. Developer mode still shows the full reasoning and every tool action.
           - Language settings now include **New bot names**: match the app language, Bulgarian Cyrillic names, or English names. Only new bots are affected.
+          - **Live shared conversations** for KodBot Business: publish a bot as live, and every signed-in member uses the same thread. The organization OpenCode key stays on the gateway; usage is recorded per member.
+          - Member harnesses no longer inherit the gateway's provider API keys.
           - Windows Solo now adds the bundled OpenCode to the user PATH and runs its sign-in from the bundled executable. Free models work immediately; sign-in is optional for paid models.
           - Gateway: failed browser logins return to the form with an error, and signed-in users can change their own password in Settings → Account.
           - The queued-message panel sits above the composer in normal flow and stays collapsed until opened, so it cannot cover the chat.
