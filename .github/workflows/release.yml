@@ -39,12 +39,17 @@ jobs:
 
           KodBot Solo and KodBot Business, shared bot templates, and OpenCode included.
 
+          - User mode keeps one calm status line through the whole turn: thinking, searching, reading, writing, editing, running a command, asking the team, using the computer, or writing a reply, with an animated icon and a timer. It stays visible after a sentence lands. Developer mode still shows the full reasoning and every tool action.
+          - The queued-message panel sits above the composer in normal flow and stays collapsed until opened, so it cannot cover the chat.
+          - Windows installers now list **Kod 13 Ltd** as Publisher; the Linux deb maintainer uses the same legal name.
+          - Windows and Android app icons now use the same mint K monogram as Linux. Android is 0.1.29 (versionCode 30).
+          - A fresh install asks KodBot Solo vs Business again; updates keep the saved choice.
           - First launch asks Solo (local, private, free, no account) or Business (organization server, browser sign-in). Change later in Settings → General → Usage mode.
           - Business owners can publish a shared bot template (name, title, description, core MEMORY.md; common secret shapes redacted). Members install their own copy; turns run in their workspace with their own key and quota.
           - Packaged builds include OpenCode 2.3.2 for the platform; pinned and updated with KodBot releases, no self-update. Add an OpenCode API key; new bots prefer it.
           - Team leaders now collect delegated replies from teammates and cross-team peers in one follow-up turn. Page forms submit again.
           - Gateway: bilingual login and owner-only Admin for users, invites, temporary passwords, disable, sessions.
-          - Android remains 0.1.28 (versionCode 29).
+          - Android 0.1.29 (versionCode 30).
           - Linux: AppImage + deb (x64). Windows: unsigned NSIS installer (SmartScreen: More info -> Run anyway). macOS: separate signed/notarized flow.
           EOF
           )"
@@ -189,6 +194,16 @@ jobs:
           grep -q "kodbot-releases" "$res/app-update.yml"
           cp "release/KodBot-${VERSION}-setup.exe" release/KodBot-setup.exe
           ls -lh release/*.exe release/*.yml release/*.blockmap
+      - name: Verify Installer Publisher
+        shell: pwsh
+        working-directory: source
+        run: |
+          $exe = Get-Item "release/win-unpacked/KodBot.exe"
+          $company = $exe.VersionInfo.CompanyName
+          if ($company -ne "Kod 13 Ltd") {
+            throw "Windows CompanyName/Publisher is '$company', expected 'Kod 13 Ltd'"
+          }
+          Write-Host "Windows Publisher: $company"
       # Existence is not execution. Start the packaged server the same way
       # the installer will, with no node_modules in the tree, and require
       # /api/health before uploading.
